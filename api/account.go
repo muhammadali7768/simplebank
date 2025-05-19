@@ -5,12 +5,13 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/jackc/pgx/v5"
+	"github.com/jackc/pgx/v5/pgconn"
 	db "github.com/muhammadali7768/simplebank/db/sqlc"
 )
 
 type createAccountRequest struct {
 	Owner    string `json:"owner" binding:"required"`
-	Currency string `json:"currency" binding:"required,oneof=USD EUR"`
+	Currency string `json:"currency" binding:"required,currency"`
 }
 
 func (server *Server) createAccount(ctx *gin.Context) {
@@ -27,6 +28,15 @@ func (server *Server) createAccount(ctx *gin.Context) {
 	})
 
 	if err != nil {
+		// Check if it's a foreign key violation
+		if pgErr, ok := err.(*pgconn.PgError); ok {
+			switch pgErr.Code {
+			case "23503", "23505":
+				ctx.JSON(http.StatusForbidden, errorResponse(err))
+				return
+			}
+
+		}
 		ctx.JSON(http.StatusInternalServerError, errorResponse(err))
 		return
 	}
