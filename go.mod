@@ -10,7 +10,14 @@ require (
 	go.uber.org/mock v0.5.2
 )
 
-require github.com/pkg/errors v0.9.1 // indirect
+require (
+	github.com/aead/chacha20 v0.0.0-20180709150244-8b13a72661da // indirect
+	github.com/aead/chacha20poly1305 v0.0.0-20201124145622-1a5aba2a8b29 // indirect
+	github.com/aead/poly1305 v0.0.0-20180717145839-3fee0db0b635 // indirect
+	github.com/golang-jwt/jwt/v5 v5.2.2 // indirect
+	github.com/o1egl/paseto v1.0.0 // indirect
+	github.com/pkg/errors v0.9.1 // indirect
+)
 
 require (
 	github.com/bytedance/sonic v1.13.2 // indirect
@@ -25,6 +32,7 @@ require (
 	github.com/go-playground/validator/v10 v10.26.0 // indirect
 	github.com/go-viper/mapstructure/v2 v2.2.1 // indirect
 	github.com/goccy/go-json v0.10.5 // indirect
+	github.com/google/uuid v1.6.0
 	github.com/jackc/pgpassfile v1.0.0 // indirect
 	github.com/jackc/pgservicefile v0.0.0-20240606120523-5a60cdf6a761 // indirect
 	github.com/jackc/pgx v3.6.2+incompatible
