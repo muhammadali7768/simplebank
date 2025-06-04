@@ -18,11 +18,6 @@ import (
 	"google.golang.org/grpc/reflection"
 )
 
-var (
-	// command-line options:
-	// gRPC server endpoint
-	grpcServerEndpoint = flag.String("grpc-server-endpoint", "localhost:9090", "gRPC server endpoint")
-)
 
 func main() {
 
@@ -54,7 +49,15 @@ func startGatwayServer(config util.Config, store db.Store) {
 	ctx, cancel := context.WithCancel(ctx)
 	defer cancel()
 
-	grpcMux := runtime.NewServeMux()
+	jsonOption:=runtime.WithMarshalerOption(runtime.MIMEWildcard, &runtime.JSONPb{
+		MarshalOptions: protojson.MarshalOptions{
+			UseProtoNames: true,
+		},
+		UnmarshalOptions: protojson.UnmarshalOptions{
+			DiscardUnknown: true,
+		},
+	})
+	grpcMux := runtime.NewServeMux(jsonOption)
 
 	err = pb.RegisterSimpleBankHandlerServer(ctx, grpcMux, server)
 	if err != nil {
