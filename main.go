@@ -2,7 +2,6 @@ package main
 
 import (
 	"context"
-	"flag"
 	"log"
 	"net"
 	"net/http"
@@ -16,8 +15,8 @@ import (
 	"github.com/muhammadali7768/simplebank/util"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"
+	"google.golang.org/protobuf/encoding/protojson"
 )
-
 
 func main() {
 
@@ -49,7 +48,7 @@ func startGatwayServer(config util.Config, store db.Store) {
 	ctx, cancel := context.WithCancel(ctx)
 	defer cancel()
 
-	jsonOption:=runtime.WithMarshalerOption(runtime.MIMEWildcard, &runtime.JSONPb{
+	jsonOption := runtime.WithMarshalerOption(runtime.MIMEWildcard, &runtime.JSONPb{
 		MarshalOptions: protojson.MarshalOptions{
 			UseProtoNames: true,
 		},
