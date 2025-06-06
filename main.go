@@ -66,6 +66,9 @@ func startGatwayServer(config util.Config, store db.Store) {
 	mux := http.NewServeMux()
 	mux.Handle("/", grpcMux)
 
+	fs := http.FileServer(http.Dir("./doc/swagger"))
+	mux.Handle("/swagger/", http.StripPrefix("/swagger/", fs))
+
 	lis, err := net.Listen("tcp", config.HttpServerAddress)
 	if err != nil {
 		log.Fatalf("failed to listen: %v", err)
